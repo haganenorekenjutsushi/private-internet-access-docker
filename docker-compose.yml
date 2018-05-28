@@ -8,13 +8,34 @@ services:
         networks:
             - pianet
         volumes:
-            - /yourpath/auth.conf:/auth.conf:ro
+            - ./auth.conf:/auth.conf:ro
         environment:
             - PROTOCOL=tcp
             - ENCRYPTION=strong
-            - REGION=Germany
+            - REGION=London
         restart: always
-        
+    deluge:
+        image: linuxserver/deluge
+        restart: always
+        networks:
+            - pianet
+        volumes:
+            - ./downloads:/downloads 
+            - ./config:/config 
+        environment:
+            - TZ=London/Europe
+    nginx:
+        image: nginx:alpine
+        restart: always
+        networks:
+            - pianet
+        ports:
+           - 8112:80
+        links:
+            - pia:deluge
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+
 networks:
     pianet:
         external: true
