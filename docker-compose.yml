@@ -12,7 +12,7 @@ services:
         environment:
             - PROTOCOL=tcp
             - ENCRYPTION=strong
-            - REGION=UK London
+            - REGION=Switzerland
         restart: always
     deluge:
         image: linuxserver/deluge
@@ -23,6 +23,15 @@ services:
             - ./config:/config 
         environment:
             - TZ=London/Europe
+    jackett:
+        image: linuxserver/jackett
+        restart: always
+        network_mode: "service:pia"
+        volumes: 
+           - ./config-jackett:/config
+           - /data/Everything Else/Torrents/Downloads:/downloads
+        environment:
+           - TZ=London/Europe
     nginx:
         image: nginx:alpine
         restart: always
@@ -32,6 +41,7 @@ services:
            - 8112:80
         links:
             - pia:deluge
+            - pia:jackett
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
 
