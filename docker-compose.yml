@@ -17,9 +17,9 @@ services:
     deluge:
         image: linuxserver/deluge
         restart: always
-        network_mode: "container:pia"
+        network_mode: "service:pia"
         volumes:
-            - ./downloads:/downloads 
+            - /data/Everything Else/Torrents/Downloads:/downloads
             - ./config:/config 
         environment:
             - TZ=London/Europe
