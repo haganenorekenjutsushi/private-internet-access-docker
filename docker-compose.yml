@@ -8,17 +8,16 @@ services:
         networks:
             - pianet
         volumes:
-            - ./auth.conf:/auth.conf:ro
+            - ./auth.conf:/auth.conf
         environment:
             - PROTOCOL=tcp
             - ENCRYPTION=strong
-            - REGION=London
+            - REGION=UK London
         restart: always
     deluge:
         image: linuxserver/deluge
         restart: always
-        networks:
-            - pianet
+        network_mode: "container:pia"
         volumes:
             - ./downloads:/downloads 
             - ./config:/config 
